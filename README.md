@@ -21,7 +21,7 @@ Vim 8 with native plugin support: clone this repository into your `~/.vim/pack/w
 Mappings
 ---
 
-`CR` or `<leader>hn`     : Insert heading at same level as current, after any children
+`CR` or `<leader>hn`     : Insert heading at same level as current, after any children  
 `S-CR` or `<leader>hh`   : Insert heading at same level as current, immediately below current line (also works for lists)  
 `C-S-CR` or `<leader>hN` : Insert heading at same level as current, immediately above current line (also works for lists)  
 `<leader>ll`             : Insert list at level one higher than current list or heading  
