@@ -13,6 +13,11 @@ If public domain licensing is valid in your jurisdiction, you may use the code i
 
 Alternatively, you may use this code under the terms of the [MIT license](https://opensource.org/licenses/MIT).
 
+Installation
+---
+
+Vim 8 with native plugin support: clone this repository into your `~/.vim/pack/whatever/start` directory.
+
 Mappings
 ---
 
