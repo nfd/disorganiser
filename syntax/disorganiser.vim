@@ -4,12 +4,10 @@ if exists("b:current_syntax")
 	finish
 endif
 
-let b:current_syntax = 'orgmode'
+syn cluster orgmodeInline contains=orgmodeTag,orgmodeTODO,orgmodeDONE,orgmodeLink,orgmodeDate,orgmodeFoldStart,orgmodeFoldEnd
 
-syn cluster orgmodeInline contains=orgmodeTODO,orgmodeDONE,orgmodeLink,orgmodeDate,orgmodeFoldStart,orgmodeFoldEnd
-
+syn match orgmodeTag ':[A-Za-z0-9._@:]\+:'
 syn region orgmodeLink matchgroup=orgmodeSubtle start="\[\[" end="\]\]"
-
 syn match orgmodeTODO 'TODO '
 syn match orgmodeDONE 'DONE '
 syn match orgmodeDate '<\d\d\d\d-\d\d-\d\d\( \a\a\a\)\?>'
@@ -36,21 +34,26 @@ syn region orgmodeH6 matchgroup=orgmodeHidden start="^\*\*\*\*\*\(\* \)\@=" end=
 syn region orgmodeH7 matchgroup=orgmodeHidden start="^\*\*\*\*\*\*\(\* \)\@=" end="$" contains=@orgmodeInline
 syn region orgmodeH8 matchgroup=orgmodeHidden start="^\*\*\*\*\*\*\*\(\* \)\@=" end="$" contains=@orgmodeInline
 
+syn region orgmodeUL start="^[ \t]\+[-+\*]" end="$" contains=@orgmodeInline
+
 " Explicitly defining colours. Yes! Very naughty.
-hi orgmodeH1 guifg=#F645A0
-hi orgmodeH2 guifg=#FCEF70
-hi orgmodeH3 guifg=#369BED
-hi orgmodeH4 guifg=#67EE67
+hi orgmodeH1 guifg=#FF7799
+hi orgmodeH2 guifg=#FFCA91
+hi orgmodeH3 guifg=#FF8BFA
+hi orgmodeH4 guifg=#7390E8
 hi orgmodeH5 guifg=#FDAD57
 hi orgmodeH6 guifg=#F57CBB
 hi orgmodeH7 guifg=#B2DABB
 hi orgmodeH8 guifg=#707DE0
+hi orgmodeUL guifg=#bc66ff
 hi orgmodeTODO guifg=#000000 guibg=#E9954C gui=bold cterm=bold
 hi orgmodeDONE guifg=#66EB66 gui=bold cterm=bold
 hi orgmodeLink guifg=#EC9A40
 hi orgmodeDate guifg=#079290
+hi orgmodeTag guifg=#EA4C5A
 hi orgmodeSubtle guifg=#444444
 hi orgmodeHidden guifg=bg
 hi orgmodeFoldStart guifg=bg
 hi orgmodeFoldEnd guifg=bg
 
+let b:current_syntax = "disorganiser"

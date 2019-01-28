@@ -1,4 +1,9 @@
 import vim
+import datetime
+import re
+
+RE_UL = re.compile(r'[ \t]+[-+\*]')
+RE_LEADING_SPACES = re.compile(r'^( *)')
 
 def current_row_0indexed():
     return vim.current.window.cursor[0] - 1
@@ -9,6 +14,18 @@ def _count_stars(line):
 
     return line.split(' ')[0].count('*')
 
+def _count_stars_nearest_outline_line_above(row):
+    """
+    does _count_stars for each line begining at (vim) row 'row' until we get a nonzero result.
+    """
+    while row > 0:
+        stars = _count_stars(vim.current.buffer[row - 1])
+        if stars > 0:
+            return stars
+        row -= 1
+
+    return 0
+
 def _indent_line(line):
     return '*' + line if line.startswith('*') else line
 
@@ -16,9 +33,12 @@ def dis_indent():
     """ Indent the current outline (just this line). """
     vim.current.line = _indent_line(vim.current.line)
 
-def _subtree_op(callback):
+def _subtree_op(callback, include_nonoutline_lines=True):
     """
     used to perform an operation on every line of a subtree (such as indent, dedent, or fold)
+
+    include_nonoutline_lines: if True, consider lines not starting with * part of the subtree
+    (at whatever level the most recent outline line was)
 
     returns the final row in vim (1-base) co-ordinates
     """
@@ -34,7 +54,8 @@ def _subtree_op(callback):
 
     while len(buf) > row:
         line = buf[row]
-        if _count_stars(line) <= stop_at:
+        num_stars = _count_stars(line)
+        if num_stars and num_stars <= stop_at and not (include_nonoutline_lines is False and num_stars == 0):
             break
 
         buf[row] = callback(buf[row])
@@ -55,30 +76,79 @@ def dis_dedent():
 def dis_dedent_subtree():
     _subtree_op(_dedent_line)
 
-def _insert_outline_and_append(row, num_stars):
+def _insert_outline_and_append(row, num_stars, char='*'):
     """
     Inserts a line at "row" and enters append mode.
+
+    Also used to insert lists, hence 'char'
     """
     if num_stars <= 0:
-        return
+        num_stars = 1
 
-    line = '*' * num_stars + ' '
+    if char == '*':
+        # Inserting an outline -- add the appropriate number of stars.
+        line = '*' * num_stars + ' '
+    else:
+        # Inserting a list -- add the appropriate number of *spaces*, then the list character.
+        line = ' ' * num_stars + char + ' '
 
     vim.current.buffer.append(line, row)
     vim.current.window.cursor = (row + 1, 1)  # move to that line
     vim.command('startinsert!')  # enter append mode
 
+def _is_list():
+    return RE_UL.match(vim.current.line)
+
+def _count_leading_spaces():
+    return len(RE_LEADING_SPACES.match(vim.current.line).group(1))
+
 def dis_outline_insert_above_children():
     """
     Insert a new outline line at the same level as the current one, immediately after the current line.
     """
-    _insert_outline_and_append(vim.current.window.cursor[0], _count_stars(vim.current.line))
+    if _is_list():
+        num_spaces = _count_leading_spaces()
+        _insert_outline_and_append(vim.current.window.cursor[0], num_spaces, char=vim.current.line[num_spaces])
+    else:
+        _insert_outline_and_append(vim.current.window.cursor[0], _count_stars_nearest_outline_line_above(vim.current.window.cursor[0]))
+
+def dis_outline_insert_after_children():
+    """
+    Insert a new outline line at the same level as the current one, after any children.
+    """
+    current_stars = _count_stars_nearest_outline_line_above(vim.current.window.cursor[0])
+    row = vim.current.window.cursor[0]
+
+    while row < len(vim.current.buffer):
+        num_stars = _count_stars(vim.current.buffer[row])
+
+        if num_stars > 0 and num_stars < current_stars:
+            break
+
+        row += 1
+
+    _insert_outline_and_append(row, current_stars)
 
 def dis_outline_insert_above_current():
     """
-    Insert a new outline line at the same level as the current one, immediately after the current line.
+    Insert a new outline line at the same level as the current one, immediately before the current line.
     """
-    _insert_outline_and_append(vim.current.window.cursor[0] - 1, _count_stars(vim.current.line))
+    if _is_list():
+        num_spaces = _count_leading_spaces()
+        _insert_outline_and_append(vim.current.window.cursor[0] - 1, num_spaces, char=vim.current.line[num_spaces])
+    else:
+        _insert_outline_and_append(vim.current.window.cursor[0] - 1, _count_stars(vim.current.line))
+
+def dis_list_insert_above_children():
+    """
+    Insert a list on the next line, indented one space more than the current list (or outline).
+    """
+    if _is_list():
+        num_spaces = _count_leading_spaces() + 1
+    else:
+        num_spaces = _count_stars(vim.current.line)
+
+    _insert_outline_and_append(vim.current.window.cursor[0], num_spaces, char='-')
 
 def _append_text_if_not_present(vim_row, text):
     line = vim.current.window.buffer[vim_row - 1]
@@ -123,3 +193,12 @@ def dis_fold_cycle():
         # Removing the markers does this for us.
         pass
 
+def dis_date_insert():
+    """
+    Insert current date at current position.
+    """
+    time_str = '<' + datetime.datetime.now().strftime('%Y-%m-%d %a') + '>'
+    row, col = vim.current.window.cursor
+    vim.current.line = '%s%s%s' % (vim.current.line[:col + 1], time_str, vim.current.line[col + 1:])
+    
+    vim.current.window.cursor = (row, col + len(time_str))
