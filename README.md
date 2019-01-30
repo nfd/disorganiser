@@ -21,14 +21,26 @@ Vim 8 with native plugin support: clone this repository into your `~/.vim/pack/w
 Mappings
 ---
 
+In normal mode:
+
 `CR` or `<leader>hn`     : Insert heading at same level as current, after any children  
 `S-CR` or `<leader>hh`   : Insert heading at same level as current, immediately below current line (also works for lists)  
 `C-S-CR` or `<leader>hN` : Insert heading at same level as current, immediately above current line (also works for lists)  
-`<leader>ll`             : Insert list at level one higher than current list or heading  
+`<leader>ll`             : Insert list at level one lower than current list or heading  
 `<<`                     : Dedent current heading  
 `<ar`                    : Dedent current heading and all children  
 `>>`                     : Indent current heading  
 `>ar`                    : Indent current heading and all children  
 `TAB`                    : Fold current heading and children (if not folded) or unfold current heading and children (if folded)  
 `<leader>sa`             : Insert current date  
+
+In insert mode:
+
+`<S-CR>`                 : Insert heading at same level as current, immediately below current line (same as normal mode)
+`<D-d>d`                 : Insert current date (same as <leader>sa)
+
+When editing tables, in normal mode:
+
+`<TAB>`                  : Reformat table and move to next cell, or next row (if at end), creating a new row if necessary
+`<CR>`                   : Reformat table and move to first cell of next row, creating a new row if necessary
 

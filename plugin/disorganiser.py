@@ -2,6 +2,8 @@ import vim
 import datetime
 import re
 
+from distable import dis_in_table, dis_table_tab, dis_table_cr
+
 RE_UL = re.compile(r'[ \t]+[-+\*]')
 RE_LEADING_SPACES = re.compile(r'^( *)')
 
@@ -192,6 +194,27 @@ def dis_fold_cycle():
         # Desired behaviour: open all folds (and remove markers)
         # Removing the markers does this for us.
         pass
+
+def dis_tab():
+    """
+    Do the Disorganiser tab action, which is context-sensitive.
+
+    In headings: cycle visibility
+    In tables: reformat table
+    """
+    if vim.current.line.startswith('*'):
+        dis_fold_cycle()
+    elif dis_in_table():
+        dis_table_tab()
+
+def dis_cr():
+    """
+    Context-sensitive CR behaviour
+    """
+    if vim.current.line.startswith('*'):
+        dis_outline_insert_after_children()
+    elif dis_in_table():
+        dis_table_cr()
 
 def dis_date_insert():
     """
