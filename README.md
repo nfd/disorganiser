@@ -9,9 +9,9 @@ Requires a recent Vim with Python 3 support.
 
 License: Disorganiser is available under two sets of terms:
 
-If public domain licensing is valid in your jurisdiction, you may use the code in any way you wish, no attribution required.
+To the extent possible under law, Nicholas FitzRoy-Dale has waived all copyright and related or neighboring rights to this work.
 
-Alternatively, you may use this code under the terms of the [MIT license](https://opensource.org/licenses/MIT).
+As an alternative, you may use this code under the terms of the [MIT license](https://opensource.org/licenses/MIT).
 
 Installation
 ---

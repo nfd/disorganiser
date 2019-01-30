@@ -13,7 +13,6 @@ syn match disDONE 'DONE\>'
 syn match disDate '<\d\d\d\d-\d\d-\d\d\( \a\a\a\)\?>'
 syn match disFoldStart '{{{'
 syn match disFoldEnd '}}}'
-syn match disTableBar '|' contained
 
 " Headings, highlighting all asterisks.
 "syn region disH1 start="^\* " end="$" contains=@disInline
@@ -39,7 +38,11 @@ syn region disH8 matchgroup=disHidden start="^\*\*\*\*\*\*\*\(\* \)\@=" end="$" 
 syn region disUL start="^[ \t]\+[-+\*]" end="$" contains=@disInline
 
 " Tables
-syn region disTR start="^[ \t]*|" end="$" contains=@disInline,disTableBar
+syn region disTR start="^[ \t]*|" end="$" contains=@disInline,disTableBar,disTableFormula
+" ... 'end' in disTableFormula says: if we end with =, highlight it as part of
+"      the formula. If we end with | (end of cell), don't highlight it.
+syn region disTableFormula start="[ \t]*=" end="=\|\(|\)\@=" contained
+syn match disTableBar '|' contained
 
 " Explicitly defining colours. Yes! Very naughty.
 hi disH1 guifg=#FF7799
@@ -60,7 +63,8 @@ hi disSubtle guifg=#444444
 hi disHidden guifg=bg
 hi disFoldStart guifg=bg
 hi disFoldEnd guifg=bg
-hi disTableBar guifg=#777777
+hi disTableBar guifg=#6345A0
 hi disTR guifg=#778Ad6
+hi disTableFormula guifg=#ffaaaa
 
 let b:current_syntax = "disorganiser"

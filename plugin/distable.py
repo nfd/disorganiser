@@ -87,7 +87,7 @@ def _reformat():
 
     # Reformat the table to the max widths.
     for idx, cells in enumerate(table):
-        table[idx] = [max_width_fmt % cell for max_width_fmt, cell in zip(max_widths_fmt, cells)]
+        table[idx] = [max_width_fmt % cell for max_width_fmt, cell in zip_longest(max_widths_fmt, cells, fillvalue='')]
 
     # Reinsert the table, only overwriting if something changed (so that tabbing around the table
     # doesn't mark the file as changed)
