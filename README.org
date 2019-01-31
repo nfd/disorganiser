@@ -20,21 +20,21 @@ Vim 8 with native plugin support: clone this repository into your `~/.vim/pack/w
 
 In normal mode:
 
-  | CR or <leader>hn    | Insert heading at same level as current, after any children                       |
-  | S-CR or <leader>hh  | Insert heading at same level as current, below current line (also works for lists)|
-  | C-S-CR or <leader>hN| Insert heading at same level as current, above current line (also works for lists)|
-  | <leader>ll          | Insert list at level one lower than current list or heading                       |
+  | CR or <leader>ha    | Insert heading at same level as current, after any children                       |
+  | S-CR or <leader>hj  | Insert heading at same level as current, below current line (also works for lists)|
+  | C-S-CR or <leader>hk| Insert heading at same level as current, above current line (also works for lists)|
+  | <leader>dl          | Insert list at level one lower than current list or heading                       |
   | <<                  | Dedent current heading                                                            |
-  | <ar                 | Dedent current heading and all children                                           |
+  | <c                  | Dedent current heading and all children                                           |
   | >>                  | Indent current heading                                                            |
-  | >ar                 | Indent current heading and all children                                           |
+  | >c                  | Indent current heading and all children                                           |
   | <TAB>               | Cycle fold level                                                                  |
-  | <leader>sa          | Insert current date                                                               |
+  | <leader>ddc         | Insert current date                                                               |
 
 In insert mode:
 
-  | <S-CR>| Insert heading below current (same as S-CR in normal mode)|
-  | <D-d>d| Insert current date (same as <leader>ca in normal mode)   |
+  | <S-CR> | Insert heading below current (same as S-CR in normal mode)|
+  | <D-d>dc| Insert current date (same as <leader>ca in normal mode)   |
 
 When editing tables, in normal mode:
 

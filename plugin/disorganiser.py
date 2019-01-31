@@ -2,7 +2,7 @@ import vim
 import datetime
 import re
 
-from distable import dis_in_table, dis_table_tab, dis_table_cr
+from distable import dis_in_table, dis_table_tab, dis_table_cr, dis_table_reformat
 
 RE_UL = re.compile(r'[ \t]+[-+\*]')
 RE_LEADING_SPACES = re.compile(r'^( *)')

@@ -128,3 +128,12 @@ def dis_table_cr():
 
     max_widths = _reformat()
     _enter_or_create_row_below(max_widths)
+
+def dis_table_reformat():
+    """
+    Reformat table (and recalculate any formulae)
+    """
+    if not dis_in_table():
+        return
+
+    _reformat()
