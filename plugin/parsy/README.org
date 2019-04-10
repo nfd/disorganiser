@@ -1,0 +1,5 @@
+This is a "vendorised" version of Parsy [[https://github.com/python-parsy/parsy]].
+
+It is distributed under the MIT license -- see LICENSE in this directory
+
+Git checkout 31c0ebf9fadaa8ef2e83da8ab5850e0277074cab, <2019-01-31 Thu>

@@ -30,13 +30,23 @@ In normal mode:
   | >c                  | Indent current heading and all children                                           |
   | <TAB>               | Cycle fold level                                                                  |
   | <leader>ddc         | Insert current date                                                               |
+  | <leader>dt          | Cycle TODO                                                                        |
 
 In insert mode:
 
   | <S-CR> | Insert heading below current (same as S-CR in normal mode)|
-  | <D-d>dc| Insert current date (same as <leader>ca in normal mode)   |
+  | <D-d>d | Insert current date (same as <leader>ca in normal mode)   |
+
+In visual mode:
+
+  | >> | Indent selected headings |
+  | << | Dedent selected headings |
 
 When editing tables, in normal mode:
 
   | <TAB>| Reformat table and move to next cell, or next row (if at end), creating a new row if needed|
   | <CR> | Reformat table and move to first cell of next row, creating a new row if needed            |
+ 
+Editing tables in insert mode:
+
+  | <D-d>t | Reformat table |

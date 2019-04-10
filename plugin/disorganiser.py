@@ -4,8 +4,15 @@ import re
 
 from distable import dis_in_table, dis_table_tab, dis_table_cr, dis_table_reformat
 
+# General annoyance here is the difference between vim.current.window.cursor, which returns
+# 1-indexed rows, and vim.current.buffer, which is 0-indexed. It makes for a lot of row - 1
+# type statements.
+
 RE_UL = re.compile(r'[ \t]+[-+\*]')
 RE_LEADING_SPACES = re.compile(r'^( *)')
+RE_TODO = re.compile(r'^(\*+)([ \t]*)(TODO |DONE )?(.*$)')
+
+TODO_CYCLE = {'': 'TODO ', 'TODO ': 'DONE ', 'DONE ': ''}
 
 def current_row_0indexed():
     return vim.current.window.cursor[0] - 1
@@ -28,12 +35,44 @@ def _count_stars_nearest_outline_line_above(row):
 
     return 0
 
+def _find_nearest_outline_row_idx_above():
+    """
+    Returns the index of the closest outline row at or above the current line.
+
+    Returns -1 if there is no outline at or above.
+    """
+    row, _col = vim.current.window.cursor
+    while row >= 1:
+        if vim.current.buffer[row - 1].startswith('*'):
+            return row - 1
+
+        row -= 1
+
+    return -1
+
 def _indent_line(line):
     return '*' + line if line.startswith('*') else line
 
 def dis_indent():
     """ Indent the current outline (just this line). """
     vim.current.line = _indent_line(vim.current.line)
+
+def _dis_visual_perline_op(fn):
+    orig_row, orig_col = vim.current.window.cursor
+    first_line = int(vim.eval('getpos("\'<")')[1])
+    last_line = int(vim.eval('getpos("\'>")')[1])
+
+    for line in range(first_line, last_line + 1):
+        vim.current.window.cursor = (line, orig_row)
+        fn()
+
+    vim.current.window.cursor = (orig_row, orig_col)
+
+def dis_indent_visual():
+    _dis_visual_perline_op(dis_indent)
+
+def dis_dedent_visual():
+    _dis_visual_perline_op(dis_dedent)
 
 def _subtree_op(callback, include_nonoutline_lines=True):
     """
@@ -211,17 +250,55 @@ def dis_cr():
     """
     Context-sensitive CR behaviour
     """
-    if vim.current.line.startswith('*'):
-        dis_outline_insert_after_children()
-    elif dis_in_table():
+    if dis_in_table():
         dis_table_cr()
+    else:
+        dis_outline_insert_after_children()
 
-def dis_date_insert():
+def dis_date_insert(offset=0):
     """
     Insert current date at current position.
+
+    You can use 'offset' to change the insertion point relative to the cursor. This lets you insert after the cursor
+    in insert mode and before the cursor in normal mode.
     """
     time_str = '<' + datetime.datetime.now().strftime('%Y-%m-%d %a') + '>'
     row, col = vim.current.window.cursor
-    vim.current.line = '%s%s%s' % (vim.current.line[:col + 1], time_str, vim.current.line[col + 1:])
+
+    vim.current.line = '%s%s%s' % (vim.current.line[:col + offset], time_str, vim.current.line[col + offset:])
     
     vim.current.window.cursor = (row, col + len(time_str))
+
+def dis_cycle_todo():
+    """
+    Insert TODO or DONE at the start of the current outline
+    """
+    buffer_idx = _find_nearest_outline_row_idx_above()
+    if buffer_idx == -1:
+        print("No outline lines at or above the cursor.")
+        return
+
+    # The todo matcher only requires an outline, so will always match at this point.
+    todo_match = RE_TODO.match(vim.current.buffer[buffer_idx])
+    stars, whitespace, todo, therest = todo_match.groups()
+    if todo is None:
+        todo = ''
+
+    next_todo = TODO_CYCLE[todo]
+    vim.current.buffer[buffer_idx] = stars + whitespace + next_todo + therest.lstrip()
+
+    # update the cursor position if we're on the line in question and past the insertion point.
+    row, col = vim.current.window.cursor
+    if buffer_idx == row - 1 and col > len(stars) + len(whitespace):
+        col += (len(next_todo) - len(todo))
+        vim.current.window.cursor = (row, col)
+
+def dis_cycle_todo_or_reformat_table():
+    """
+    Context-sensitive <leader>dt -- reformat table if in a table, cycle TODO otherwise.
+    """
+    if dis_in_table():
+        dis_table_reformat()
+    else:
+        dis_cycle_todo()
+

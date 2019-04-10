@@ -65,6 +65,6 @@ hi disFoldStart guifg=bg
 hi disFoldEnd guifg=bg
 hi disTableBar guifg=#6345A0
 hi disTR guifg=#778Ad6
-hi disTableFormula guifg=#ffaaaa
+hi disTableFormula guifg=#7A67c6
 
 let b:current_syntax = "disorganiser"
