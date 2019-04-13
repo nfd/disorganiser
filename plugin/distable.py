@@ -7,6 +7,7 @@ from itertools import zip_longest
 import vim
 
 from disexpr import Cell as CellParser, dis_eval, DEFAULT_CONTEXT, unlist
+from disops import dis_visual_perline_op
 
 TABLE_LINE_RE = re.compile(r'^[ \t]*\|')
 TABLE_BAR_END = re.compile(r'.*\|[ \t]*$')
@@ -307,4 +308,15 @@ def dis_table_reformat():
         return
 
     _recalc()
+    _reformat()
+
+def _make_single_column_table():
+    if not dis_in_table():
+        vim.current.line = '|' + vim.current.line
+
+def dis_make_table_visual():
+    """
+    Turn the selected visual lines into a single-column table.
+    """
+    dis_visual_perline_op(_make_single_column_table)
     _reformat()

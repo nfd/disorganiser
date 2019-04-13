@@ -20,6 +20,7 @@ inoremap <buffer> <D-d>d <ESC>:python3 dis_date_insert(offset=1)<CR>a
 noremap <buffer> <leader>dl :python3 dis_list_insert_above_children()<CR>
 inoremap <buffer> <D-d>t <ESC>:python3 dis_table_reformat()<CR>a
 noremap <buffer> <leader>dt :python3 dis_cycle_todo_or_reformat_table()<CR>
+vnoremap <buffer> <leader>d\| :python3 dis_make_table_visual()<CR>
 
 " Compatibility: disable rainbow parentheses in org files (it steals the colouring for URLs)
 if (exists('g:rainbow_active') && g:rainbow_active)

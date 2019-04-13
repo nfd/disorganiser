@@ -2,7 +2,8 @@ import vim
 import datetime
 import re
 
-from distable import dis_in_table, dis_table_tab, dis_table_cr, dis_table_reformat
+from distable import dis_in_table, dis_table_tab, dis_table_cr, dis_table_reformat, dis_make_table_visual
+from disops import dis_visual_perline_op
 
 # General annoyance here is the difference between vim.current.window.cursor, which returns
 # 1-indexed rows, and vim.current.buffer, which is 0-indexed. It makes for a lot of row - 1
@@ -57,22 +58,11 @@ def dis_indent():
     """ Indent the current outline (just this line). """
     vim.current.line = _indent_line(vim.current.line)
 
-def _dis_visual_perline_op(fn):
-    orig_row, orig_col = vim.current.window.cursor
-    first_line = int(vim.eval('getpos("\'<")')[1])
-    last_line = int(vim.eval('getpos("\'>")')[1])
-
-    for line in range(first_line, last_line + 1):
-        vim.current.window.cursor = (line, orig_row)
-        fn()
-
-    vim.current.window.cursor = (orig_row, orig_col)
-
 def dis_indent_visual():
-    _dis_visual_perline_op(dis_indent)
+    dis_visual_perline_op(dis_indent)
 
 def dis_dedent_visual():
-    _dis_visual_perline_op(dis_dedent)
+    dis_visual_perline_op(dis_dedent)
 
 def _subtree_op(callback, include_nonoutline_lines=True):
     """
@@ -301,4 +291,3 @@ def dis_cycle_todo_or_reformat_table():
         dis_table_reformat()
     else:
         dis_cycle_todo()
-
