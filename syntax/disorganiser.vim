@@ -13,6 +13,9 @@ syn match disDONE 'DONE\>'
 syn match disDate '<\d\d\d\d-\d\d-\d\d\( \a\a\a\)\?>'
 syn match disFoldStart '{{{'
 syn match disFoldEnd '}}}'
+syn region disQuote1 start="^>" end="$" contains=@disInline
+syn region disQuote2 start="^> \?>" end="$" contains=@disInline
+syn region disQuote3 start="^> \?> \?>" end="$" contains=@disInline
 
 " Headings, highlighting all asterisks.
 "syn region disH1 start="^\* " end="$" contains=@disInline
@@ -66,5 +69,8 @@ hi disFoldEnd guifg=bg
 hi disTableBar guifg=#6345A0
 hi disTR guifg=#778Ad6
 hi disTableFormula guifg=#7A67c6
+hi disQuote1 guifg=#67b2a4
+hi disQuote2 guifg=#8bb569
+hi disQuote3 guifg=#a9b569
 
 let b:current_syntax = "disorganiser"
