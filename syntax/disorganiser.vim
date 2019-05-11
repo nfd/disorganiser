@@ -51,6 +51,7 @@ syn match disTableBar '|' contained
 " Explicitly defining colours. Yes! Very naughty.
 " ctermfg colours are derived from the hex using this gist:
 " https://gist.github.com/MicahElliott/719710#gistcomment-1442838
+hi Normal ctermbg=0 ctermfg=231
 hi disH1 ctermfg=210 guifg=#FF7799
 hi disH2 ctermfg=222 guifg=#FFCA91
 hi disH3 ctermfg=213 guifg=#FF8BFA
