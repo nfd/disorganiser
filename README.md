@@ -40,30 +40,30 @@ This section is just a sketch of what Disorganiser offers, but see the Mappings 
 Mappings
 ---
 
-Key                     | Mode   | Outcome
------------------------ | Normal | -----------------------------------------------------------------------------------
-| CR or `<leader>ha`    | Normal | Insert heading at same level as current, after any children                       |
-| S-CR or `<leader>hj`  | Normal | Insert heading at same level as current, below current line (also works for lists)|
-| C-S-CR or `<leader>hk`| Normal | Insert heading at same level as current, above current line (also works for lists)|
-| `<leader>dl`          | Normal | Insert list at level one lower than current list or heading                       |
-| `<<`                  | Normal | Dedent current heading                                                            |
-| `<c`                  | Normal | Dedent current heading and all children                                           |
-| `>>`                  | Normal | Indent current heading                                                            |
-| `>c`                  | Normal | Indent current heading and all children                                           |
-| `<TAB>`               | Normal | Cycle fold level                                                                  |
-| `<leader>ddc`         | Normal | Insert current date                                                               |
-| `<leader>dt`          | Normal | Cycle TODO                                                                        |
-| `<S-CR>`              | Insert | Insert heading below current (same as S-CR in normal mode)|
-| `<D-d>d`              | Insert | Insert current date (same as <leader>ca in normal mode)   |
-| `>>`                  | Visual | Indent selected headings |
-| `<<`                  | Visual | Dedent selected headings |
+Key                   | Mode   | Outcome
+----------------------| ------ | -----------------------------------------------------------------------------------
+CR or `<leader>ha`    | Normal | Insert heading at same level as current, after any children
+S-CR or `<leader>hj`  | Normal | Insert heading at same level as current, below current line (also works for lists)
+C-S-CR or `<leader>hk`| Normal | Insert heading at same level as current, above current line (also works for lists)
+`<leader>dl`          | Normal | Insert list at level one lower than current list or heading
+`<<`                  | Normal | Dedent current heading
+`<c`                  | Normal | Dedent current heading and all children
+`>>`                  | Normal | Indent current heading
+`>c`                  | Normal | Indent current heading and all children
+`<TAB>`               | Normal | Cycle fold level
+`<leader>ddc`         | Normal | Insert current date
+`<leader>dt`          | Normal | Cycle TODO
+`<S-CR>`              | Insert | Insert heading below current (same as S-CR in normal mode)
+`<D-d>d`              | Insert | Insert current date (same as <leader>ca in normal mode)
+`>>`                  | Visual | Indent selected headings
+`<<`                  | Visual | Dedent selected headings
 
 When editing tables, some keys work differently:
 Key                     | Mode   | Outcome
------------------------ | Normal | -----------------------------------------------------------------------------------
-| `<TAB>`               | Normal | Reformat table and move to next cell, or next row (if at end), creating a new row if needed|
-| `<CR>`                | Normal | Reformat table and move to first cell of next row, creating a new row if needed            |
-| `<D-d>t`              | Insert | Reformat table |
+----------------------- | ------ | -----------------------------------------------------------------------------------
+`<TAB>`               | Normal | Reformat table and move to next cell, or next row (if at end), creating a new row if needed
+`<CR>`                | Normal | Reformat table and move to first cell of next row, creating a new row if needed
+`<D-d>t`              | Insert | Reformat table
  
 Configuration
 ---
