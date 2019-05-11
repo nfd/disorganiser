@@ -35,7 +35,7 @@ This section is just a sketch of what Disorganiser offers, but see the Mappings 
 
 **Tables** are created by starting the line with a pipe (optionally preceeded by whitespace). Tables can contain formulae and references to other cells.
 
-**URLs**: Create a URL using `[[` and `]]`, e.g. `[[http://code.lardcave.net]]`. If you have mouse support, URLs are clickable; clicking a URL by default copies it to the anonymous register (as if it had been yanked) and opens the URL using the default system handler.
+**URLs**: Create a URL using `[[` and `]]`, e.g. `[[http://code.lardcave.net]]`. If you have mouse support, URLs are double-clickable; double-clicking a URL by default copies it to the anonymous register (as if it had been yanked) and opens the URL using the default system handler.
 
 Mappings
 ---
