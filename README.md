@@ -59,11 +59,12 @@ C-S-CR or `<leader>hk`| Normal | Insert heading at same level as current, above 
 `<<`                  | Visual | Dedent selected headings
 
 When editing tables, some keys work differently:
+
 Key                     | Mode   | Outcome
 ----------------------- | ------ | -----------------------------------------------------------------------------------
-`<TAB>`               | Normal | Reformat table and move to next cell, or next row (if at end), creating a new row if needed
-`<CR>`                | Normal | Reformat table and move to first cell of next row, creating a new row if needed
-`<D-d>t`              | Insert | Reformat table
+`<TAB>`                 | Normal | Reformat table and move to next cell, or next row (if at end), creating a new row if needed
+`<CR>`                  | Normal | Reformat table and move to first cell of next row, creating a new row if needed
+`<D-d>t`                | Insert | Reformat table
  
 Configuration
 ---
