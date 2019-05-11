@@ -48,29 +48,31 @@ syn region disTableFormula start="[ \t]*=" end="=\|\(|\)\@=" contained
 syn match disTableBar '|' contained
 
 " Explicitly defining colours. Yes! Very naughty.
-hi disH1 guifg=#FF7799
-hi disH2 guifg=#FFCA91
-hi disH3 guifg=#FF8BFA
-hi disH4 guifg=#7390E8
-hi disH5 guifg=#FDAD57
-hi disH6 guifg=#F57CBB
-hi disH7 guifg=#B2DABB
-hi disH8 guifg=#707DE0
-hi disUL guifg=#bc66ff
-hi disTODO guifg=#000000 guibg=#E9954C gui=bold cterm=bold
-hi disDONE guifg=#66EB66 gui=bold cterm=bold
-hi disLink guifg=#EC9A40
-hi disDate guifg=#00CECE
-hi disTag guifg=#EA4C5A
-hi disSubtle guifg=#444444
-hi disHidden guifg=bg
-hi disFoldStart guifg=bg
-hi disFoldEnd guifg=bg
-hi disTableBar guifg=#6345A0
-hi disTR guifg=#778Ad6
-hi disTableFormula guifg=#7A67c6
-hi disQuote1 guifg=#67b2a4
-hi disQuote2 guifg=#8bb569
-hi disQuote3 guifg=#a9b569
+" ctermfg colours are derived from the hex using this gist:
+" https://gist.github.com/MicahElliott/719710#gistcomment-1442838
+hi disH1 ctermfg=210 guifg=#FF7799
+hi disH2 ctermfg=222 guifg=#FFCA91
+hi disH3 ctermfg=213 guifg=#FF8BFA
+hi disH4 ctermfg=68 guifg=#7390E8
+hi disH5 ctermfg=215 guifg=#FDAD57
+hi disH6 ctermfg=211 guifg=#F57CBB
+hi disH7 ctermfg=151 guifg=#B2DABB
+hi disH8 ctermfg=68 guifg=#707DE0
+hi disUL ctermfg=135 guifg=#bc66ff
+hi disTODO ctermfg=0 ctermbg=173 guifg=#000000 guibg=#E9954C gui=bold cterm=bold
+hi disDONE ctermfg=77 guifg=#66EB66 gui=bold cterm=bold
+hi disLink ctermfg=209 guifg=#EC9A40
+hi disDate ctermfg=44 guifg=#00CECE
+hi disTag ctermfg=167 guifg=#EA4C5A
+hi disSubtle ctermfg=44 guifg=#444444
+hi disHidden ctermfg=bg guifg=bg
+hi disFoldStart ctermfg=bg guifg=bg
+hi disFoldEnd ctermfg=bg guifg=bg
+hi disTableBar ctermfg=61 guifg=#6345A0
+hi disTR ctermfg=104 guifg=#778Ad6
+hi disTableFormula ctermfg=98 guifg=#7A67c6
+hi disQuote1 ctermfg=73 guifg=#67b2a4
+hi disQuote2 ctermfg=107 guifg=#8bb569
+hi disQuote3 ctermfg=143 guifg=#a9b569
 
 let b:current_syntax = "disorganiser"
