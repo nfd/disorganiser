@@ -1,1 +1,1 @@
-au BufNewFile,BufRead *.org set filetype=disorganiser
+au BufNewFile,BufRead *.dis set filetype=disorganiser
