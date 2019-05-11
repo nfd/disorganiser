@@ -1,6 +1,9 @@
-import vim
+import sys
 import datetime
 import re
+import subprocess
+
+import vim
 
 from distable import dis_in_table, dis_table_tab, dis_table_cr, dis_table_reformat, dis_make_table_visual
 from disops import dis_visual_perline_op
@@ -291,3 +294,63 @@ def dis_cycle_todo_or_reformat_table():
         dis_table_reformat()
     else:
         dis_cycle_todo()
+
+def _vim_config_exists(name):
+    return vim.eval(f'exists("{name}")') != '0'
+
+def _vim_get_config(name, default=None):
+    if _vim_config_exists(name):
+        return vim.eval(name)
+    return default
+
+URL_OPEN_BY_PLATFORM = {'darwin': 'open', 'win32': 'start', 'default': 'xdg-open'}
+def _vim_get_url_open_command():
+    """
+    Return the command to open URLs on this system, or None.
+    """
+    # If we don't want to open URLs, then don't.
+    if _vim_config_exists('g:disorganiser_url_no_open'):
+        return None
+    else:
+        open_cmd = _vim_get_config('g:disorganiser_url_open_command', None)
+
+        if open_cmd is None:
+            open_cmd = URL_OPEN_BY_PLATFORM.get(sys.platform, URL_OPEN_BY_PLATFORM['default'])
+
+        return open_cmd
+
+def _mouse_open_url():
+    # Are we in a url?
+    current_line = vim.current.line
+    current_cursor = vim.current.window.cursor[1]
+
+    url_start = current_line.rfind('[[', 0, current_cursor)
+    url_end = current_line.find(']]', current_cursor)
+
+    if url_start != -1 and url_start <= current_cursor and url_end != -1 and url_end >= current_cursor:
+        url = current_line[url_start + 2:url_end]
+
+        # Copy the URL to the unnamed register, as if we'd yanked this URL.
+        vim.command('let @" = "%s"' % (url.replace('"', r'\"'),))
+
+        if '://' not in url:
+            url = 'http://' + url
+
+        # Invoke whatever is registered on this system to handle URLs.
+        url_open_command = _vim_get_url_open_command()
+        if url_open_command:
+            subprocess.call([url_open_command, url])
+        return True  # Event was handled, don't bubble up to Vim.
+
+    return False # Event was not handled, invoke default Vim behaviour.
+
+def dis_mouse(event_name):
+    handled = False
+
+    if event_name == '2-LeftMouse':
+        # double click: open link
+        handled = _mouse_open_url()
+
+    if not handled:
+        # Get Vim to handle the event without mappings.
+        vim.command(r'execute "normal! \<%s>"' % (event_name,))

@@ -7,6 +7,7 @@ endif
 syn cluster disInline contains=disTag,disTODO,disDONE,disLink,disDate,disFoldStart,disFoldEnd
 
 syn match disTag ':[A-Za-z0-9._@:]\+:'
+syn region disLiteral matchgroup=disSubtle start="`" end="`\|$"
 syn region disLink matchgroup=disSubtle start="\[\[" end="\]\]"
 syn match disTODO 'TODO\>'
 syn match disDONE 'DONE\>'
@@ -37,7 +38,7 @@ syn region disH6 matchgroup=disHidden start="^\*\*\*\*\*\(\* \)\@=" end="$" cont
 syn region disH7 matchgroup=disHidden start="^\*\*\*\*\*\*\(\* \)\@=" end="$" contains=@disInline
 syn region disH8 matchgroup=disHidden start="^\*\*\*\*\*\*\*\(\* \)\@=" end="$" contains=@disInline
 
-" Lists
+" Unordered lists (start with - or *)
 syn region disUL start="^[ \t]\+[-+\*]" end="$" contains=@disInline
 
 " Tables
@@ -64,7 +65,7 @@ hi disDONE ctermfg=77 guifg=#66EB66 gui=bold cterm=bold
 hi disLink ctermfg=209 guifg=#EC9A40
 hi disDate ctermfg=44 guifg=#00CECE
 hi disTag ctermfg=167 guifg=#EA4C5A
-hi disSubtle ctermfg=44 guifg=#444444
+hi disSubtle ctermfg=59 guifg=#444444
 hi disHidden ctermfg=bg guifg=bg
 hi disFoldStart ctermfg=bg guifg=bg
 hi disFoldEnd ctermfg=bg guifg=bg
@@ -74,5 +75,6 @@ hi disTableFormula ctermfg=98 guifg=#7A67c6
 hi disQuote1 ctermfg=73 guifg=#67b2a4
 hi disQuote2 ctermfg=107 guifg=#8bb569
 hi disQuote3 ctermfg=143 guifg=#a9b569
+hi disLiteral ctermfg=157 guifg=#b4edb1
 
 let b:current_syntax = "disorganiser"

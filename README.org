@@ -16,6 +16,22 @@ As an alternative, you may use this code under the terms of the MIT license [[ht
 
 Vim 8 with native plugin support: clone this repository into your `~/.vim/pack/whatever/start` directory.
 
+* Usage
+
+This section is just a sketch of what Disorganiser offers, but see the Mappings section for shortcuts for many of these commands.
+
+Quotation: Enclose text in backticks, `like this` to quote it and protect it from any other syntax highlighting.
+
+Headings: Start a line with a single asterisk (`*`) to create a heading. Start a line with two asterisks to create a sub-heading, and so on. Press <TAB> on a heading to switch between hiding or showing it. Headings can be indented or dedented with >> and <<, and you can do the same for entire subtrees with <leader><c and <leader>>c.
+
+Dates: Insert the current date with <leader>ddc.
+
+TODO and DONE have special highlighting. Use <leader>dt when on a heading to cycle between TODO, DONE, and nothing.
+
+Tables are created by starting the line with a pipe (optionally preceeded by whitespace). Tables can contain formulae and references to other cells.
+
+URLs: Create a URL using `[[` and `]]`, e.g. [[http://code.lardcave.net]]. If you have mouse support, URLs are clickable; clicking a URL by default copies it to the anonymous register (as if it had been yanked) and opens the URL using the default system handler.
+
 * Mappings
 
 In normal mode:
@@ -50,3 +66,9 @@ When editing tables, in normal mode:
 Editing tables in insert mode:
 
   | <D-d>t | Reformat table |
+ 
+* Configuration
+
+g:disorganiser_url_open_command: Command to use to open URLs. If not specified, it is open on macOS, start on Windows, and xdg-open on other systems.
+g:disorganiser_url_no_open: Don't attempt to open URLs.
+
