@@ -55,7 +55,12 @@ def _find_nearest_outline_row_idx_above():
     return -1
 
 def _indent_line(line):
-    return '*' + line if line.startswith('*') else line
+    if line.startswith('*'):
+        return '*' + line
+    elif _is_list(line):
+        return ' ' + line
+    else:
+        return line
 
 def dis_indent():
     """ Indent the current outline (just this line). """
@@ -101,6 +106,10 @@ def dis_indent_subtree():
     _subtree_op(_indent_line)
 
 def _dedent_line(line):
+    if line.startswith('*') and not line.startswith('* '):
+        return line[1:]
+    elif _is_list(line) and _is_list(line[1:]):
+        return line[1:]
     return line[1:] if line.startswith('*') and not line.startswith('* ') else line
 
 def dis_dedent():
@@ -130,8 +139,11 @@ def _insert_outline_and_append(row, num_stars, char='*'):
     vim.current.window.cursor = (row + 1, 1)  # move to that line
     vim.command('startinsert!')  # enter append mode
 
-def _is_list():
-    return RE_UL.match(vim.current.line)
+def _is_list(line=None):
+    if line is None:
+        line = vim.current.line
+
+    return RE_UL.match(line)
 
 def _count_leading_spaces():
     return len(RE_LEADING_SPACES.match(vim.current.line).group(1))
