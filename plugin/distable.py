@@ -271,7 +271,7 @@ def _reformat():
 
     return max_widths
 
-def dis_table_tab():
+def dis_table_tab(insert_mode=False):
     if not dis_in_table():
         return
 
@@ -283,10 +283,10 @@ def dis_table_tab():
     max_widths = _reformat()
 
     # Move the cursor to the next column if we're not at the end.
-    # TODO if we are at the end, move to the next row, possibly creating a new row.
+    # If we are at the end, move to the next row, possibly creating a new row.
     if current_column < len(max_widths) - 2: # 2 because we have an extra 'pre-table' column at the start.
         new_x = sum(max_widths[:current_column + 1]) + current_column  # the addition accounts for the | chars
-        vim.current.window.cursor = (vim.current.window.cursor[0], new_x + 1)
+        vim.current.window.cursor = (vim.current.window.cursor[0], new_x + 1 + (1 if insert_mode else 0))
     else:
         _enter_or_create_row_below(max_widths)
 

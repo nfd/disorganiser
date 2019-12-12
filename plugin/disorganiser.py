@@ -251,6 +251,13 @@ def dis_tab():
     elif dis_in_table():
         dis_table_tab()
 
+def dis_itab():
+    """
+    Insert-mode tab -- jump to next cell if in table.
+    """
+    if dis_in_table():
+        dis_table_tab(insert_mode=True)
+
 def dis_cr():
     """
     Context-sensitive CR behaviour

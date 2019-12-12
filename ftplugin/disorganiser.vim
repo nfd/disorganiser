@@ -16,6 +16,7 @@ noremap <buffer> <leader>hj :python3 dis_outline_insert_above_children()<CR>
 noremap <buffer> <C-S-CR> :python3 dis_outline_insert_above_current()<CR>
 noremap <buffer> <leader>hk :python3 dis_outline_insert_above_current()<CR>
 noremap <buffer> <TAB> :python3 dis_tab()<CR>
+inoremap <buffer> <TAB> <ESC>:python3 dis_itab()<CR>i
 noremap <buffer> <leader>ddc :python3 dis_date_insert(offset=0)<CR>
 inoremap <buffer> <D-d>d <ESC>:python3 dis_date_insert(offset=1)<CR>a
 noremap <buffer> <leader>dl :python3 dis_list_insert_above_children()<CR>
