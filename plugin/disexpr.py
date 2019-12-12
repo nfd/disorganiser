@@ -20,11 +20,16 @@ Int = regex(r'-?[0-9]+').map(int) << WS
 Decimal = regex(r'-?[0-9]+\.[0-9]*').map(decimal.Decimal) << WS
 String = string('"') >> regex(r'[^"]*') << string('"') << WS
 Identifier = IDENTIFIER.map(lambda ident: ('ident', (ident,)))
-RelativeSingleRef = string('@') >> Int.map(lambda single: ('rel', [single]))
+NumericRelativeSingleRef = string('@') >> Int.map(lambda single: ('rel', [single]))
+DirectionalRelativeSingleRef =  \
+    string("before").map(lambda single: ('rel', [-1])) \
+    | string("after").map(lambda single: ('rel', [1])) \
+    | string("this").map(lambda single: ('rel', [0]))
+RelativeSingleRef = NumericRelativeSingleRef | DirectionalRelativeSingleRef
 AbsoluteSingleRef = Int.map(lambda single: ('abs', [single]))
 ColOrRowRef = seq(RelativeSingleRef | AbsoluteSingleRef, seq(string('..') >> (RelativeSingleRef | AbsoluteSingleRef)).optional()) \
     .combine(lambda r1, r2: ('range', [r1] + r2) if r2 else r1)
-ExplicitRef = seq(ColOrRowRef, ColOrRowRef).combine(lambda row, col: ('cell', [row, col]))
+ExplicitRef = seq(ColOrRowRef, WS >> ColOrRowRef).combine(lambda row, col: ('cell', [row, col]))
 DirRef = (string('l') >> WS >> Int).map(lambda single: ('cell', [('rel', [0]), ('rel', [-single])])) \
         | (string('r') >> WS >> Int).map(lambda single: ('cell', [('rel', [0]), ('rel', [single])])) \
         | (string('u') >> WS >> Int).map(lambda single: ('cell', [('rel', [-single]), ('rel', [0])])) \
@@ -185,7 +190,14 @@ DEFAULT_CONTEXT = Scopes({
 def test(expr_string):
     expr = Cell.parse(expr_string)
     print(expr)
-    print(dis_eval(expr))
+
+    # Create a context supporting the most basic table action for testing.
+    context = DEFAULT_CONTEXT.copy()
+    context.push({
+        "cell": lambda context, row, col: 42,
+    })
+
+    print(dis_eval(expr, context))
 
 if __name__ == '__main__':
     import sys

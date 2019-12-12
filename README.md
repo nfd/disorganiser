@@ -72,3 +72,21 @@ Configuration
 `g:disorganiser_url_open_command`: Command to use to open URLs. If not specified, it is open on macOS, start on Windows, and xdg-open on other systems.  
 `g:disorganiser_url_no_open`: Don't attempt to open URLs.
 
+Tables
+---
+
+*Formulae*: In table cells, indicate that a cell contains a formula by starting it with the equals sign `=`. To evaluate (or re-evaluate) all cells in a table, use `<leader>dt` while inside a table. Disorganiser puts the result of the formula to the right of the formula, preceeded by an equals sign. For example, a cell containing the formula `=2 + 2` would, after evaluation with `<leader>dt`, become `=2 + 2=4`.
+
+The `sum` function is supported, to sum a row or column of cells. For example, `=sum([1..before this])` sums all values in the column containing this cell, starting at row 1 and ending at the row just before this cell. See "Cell references in tables" for more information on cell references.
+
+*Cell references in tables*: In formulae, you can reference other cells by using the syntax `[row column]`. Both `row` and `column` can be either absolute or relative references.
+
+To specify an absolute reference, specify the index as a number starting from 0. For example, `[0 0]` references the first cell of the table, in the top left.
+
+To specify a relative reference, write an at sign `@` followed by a number specifing the number of cells to move relative to the current cell. For example, `[@-1 @0]` specifies the cell above this one; `[@0 @-1]` specifies the cell to the left, `[@2 @3]` specifies the cell two cells below and three cells to the right, and so on.
+
+*Ranges*: You can also specify cell ranges. To do so, write an absolute or relative reference, two dots `..`, and another absolute or relative reference. For example, `[1..@-1 @0]` specifies all cells in this cell's column, from the second row to the row just above this cell. This is useful for `sum`, where you can write `=sum([1..@-1 @0])` to sum the column of numbers above (excluding, presumably, the title).
+
+For readability, you can specify `before` instead of `@-1`, `after` instead of `@1`, and `this` instead of `@0`. So the above formula could be rewritten as `=sum([1..before this])`.
+
+
